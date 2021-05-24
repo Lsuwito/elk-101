@@ -1,6 +1,6 @@
 # ELK (Elastic Logstash Kibana) 101
 
-Run ELK stack in Docker containers. 
+## Run ELK stack in Docker containers. 
 
 1. app (with FileBeat) -> A sample api to generate some log data, and filebeat ships the log data to logstash
 2. logstash - ingest the log data, transform it, and send it to ElasticSearch for storage
@@ -11,7 +11,7 @@ Run ELK stack in Docker containers.
 docker-compose up -d
 ```
 
-Generate an Error log
+## Generate an Error log in the app
 ```
 curl -d '{"message": "testing"}' -H "Content-Type: application/json" -X POST http://localhost:5001/Error
 ```
