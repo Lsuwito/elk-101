@@ -1,0 +1,10 @@
+# Watch the given paths for log data
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /app/logs/*.log
+
+# Ship the data to logstash
+output.logstash:
+  hosts: ["logstash:5044"]

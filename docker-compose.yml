@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+    app:
+        build:
+            context: .
+            dockerfile: app/Dockerfile
+        volumes:
+            - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+            - ./filebeat.yml:/etc/filebeat/filebeat.yml:ro
+        ports: 
+            - 5001:5001
+        depends_on:
+            - logstash
+        networks:
+            - elk
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+        environment:
+            - discovery.type=single-node        
+            - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+        ports:
+            - 9200:9200
+        networks:
+            - elk
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.12.1
+        ports:
+            - 5601:5601
+        environment:
+            ELASTICSEARCH_URL: http://elasticsearch:9200      
+            ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+        depends_on:
+            - elasticsearch
+        networks:
+            - elk
+    logstash:
+        image: docker.elastic.co/logstash/logstash:7.12.1
+        volumes:
+            - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+        ports:
+            - 5044:5044
+        depends_on:
+            - elasticsearch
+        networks:
+            - elk
+networks:
+    elk:
+        driver: bridge
