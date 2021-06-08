@@ -15,7 +15,7 @@ namespace MyApi
                 {
                     configuration.MinimumLevel.Information()
                         .WriteTo.Console()
-                        .WriteTo.File("logs/myapi-log.log", rollingInterval: RollingInterval.Day);
+                        .WriteTo.File("logs/myapi-log.log", rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:o} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
                 })
             .ConfigureWebHostDefaults(webBuilder =>
             {
