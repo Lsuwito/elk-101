@@ -33,6 +33,20 @@ services:
             - elasticsearch
         networks:
             - elk
+        healthcheck:
+           test: curl -f http://localhost:5601 || exit 1
+           interval: 1m
+           retries: 5
+           start_period: 0s
+    createindexpattern:
+        image: docker.elastic.co/kibana/kibana:7.12.1
+        depends_on:
+            - kibana
+        volumes:
+            - ./create-index-pattern.sh:/usr/share/kibana/create-index-pattern.sh
+        command: ['/bin/sh', './create-index-pattern.sh']
+        networks:
+            - elk
     logstash:
         image: docker.elastic.co/logstash/logstash:7.12.1
         volumes:

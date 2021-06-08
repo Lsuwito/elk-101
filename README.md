@@ -11,7 +11,12 @@
 docker-compose up -d
 ```
 
-## Generate an Error log in the app
+## Generate an error log in the app
 ```
 curl -d '{"message": "testing"}' -H "Content-Type: application/json" -X POST http://localhost:5001/Error
+```
+
+## Create index pattern in Kibana
+```
+/bin/sh create-index-pattern.sh
 ```
